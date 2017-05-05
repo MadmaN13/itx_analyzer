@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MessageCollection>
+    <!-- DETECTORS-->
+    <Detector class="analyzer.detectors.SystemOutPrintLnInvocationDetector">
+        <Details>
+            <![CDATA[
+    <p>This detector warns about SYS_OUTs used in the code. It is a fast detector.</p>
+    ]]>
+        </Details>
+    </Detector>
+
+    <!-- BUG PATTERNS-->
+    <BugPattern type="SYSTEM_OUT_PRINTLN_INVOCATION">
+        <ShortDescription>sysout detector</ShortDescription>
+        <LongDescription>Found sysout in {1}</LongDescription>
+        <Details>
+            <![CDATA[
+    <p>This is a call to System.out.println/err method. </p>
+    which should be avoided.
+    ]]>
+        </Details>
+    </BugPattern>
+    <BugCode abbrev="SYS_OUT_P">Found sysout</BugCode>
+</MessageCollection>

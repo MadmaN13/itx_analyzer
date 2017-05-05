@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindbugsPlugin>
+    <Detector class="analyzer.detectors.SystemOutPrintLnInvocationDetector"
+              reports="SYSTEM_OUT_PRINTLN_INVOCATION"
+              speed="fast"/>
+    <BugPattern
+            abbrev="SYS_OUT_P"
+            type="SYSTEM_OUT_PRINTLN_INVOCATION"
+            category="CORRECTNESS"/>
+</FindbugsPlugin>

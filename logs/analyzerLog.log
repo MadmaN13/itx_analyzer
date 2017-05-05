@@ -1,0 +1,4 @@
+[ERROR] 2017-05-05 12:40:28.655 [main] Main - hello!
+[DEBUG] 2017-05-05 13:26:43.503 [main] TestLogger - Debug
+[INFO ] 2017-05-05 13:26:43.506 [main] TestLogger - Info
+[ERROR] 2017-05-05 13:26:43.506 [main] TestLogger - Error
