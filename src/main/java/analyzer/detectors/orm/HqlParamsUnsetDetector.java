@@ -37,8 +37,8 @@ public class HqlParamsUnsetDetector extends AbstractBytecodeFileTracingDetector 
 
     @Override
     public void sawOpcode(int seen) {
-        printCode(true); codePrinted = true;
-        printOpcode(seen);
+//        printCode(true); codePrinted = true;
+//        printOpcode(seen);
         if (seen == LDC) {
 //            printMessage("Seen LDC!");
             if (StringUtils.ldcParamIsString(getCode().toString(true), getPC())) {

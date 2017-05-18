@@ -44,7 +44,7 @@ public class NoEntityDefaultConstructorDetector extends AbstractBytecodeFileTrac
     public void visitAnnotation(Annotations annotations) {
         List<AnnotationEntry> entries = Arrays.asList(annotations.getAnnotationEntries());
         for (AnnotationEntry a:entries) {
-            printAnnotationEntry(a);
+//            printAnnotationEntry(a);
             if (isEntity(a) & !found) {
                 reportBug();
                 found = false;
