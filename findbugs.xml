@@ -1,10 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FindbugsPlugin>
-    <Detector class="analyzer.detectors.SystemOutPrintLnInvocationDetector"
+    <!-- DETECTORS -->
+    <Detector class="analyzer.detectors.sample.SystemOutPrintLnInvocationDetector"
               reports="SYSTEM_OUT_PRINTLN_INVOCATION"
               speed="fast"/>
+    <Detector class="analyzer.detectors.spring.config.commons.ScanSpringConfigClassNameDetector"
+              reports="SPRING_MISCONFIGURATION"
+              speed="fast"/>
+    <Detector class="analyzer.detectors.memleak.usr.UnclosedEntityManagerDetector"
+              reports="UNCLOSED_ENTITY_MANAGER"
+              speed="fast"/>
+    <Detector class="analyzer.detectors.memleak.usr.UnclosedSqlConnectionDetector"
+              reports="UNCLOSED_SQL_CONNECTION"
+              speed="fast"/>
+    <Detector class="analyzer.detectors.memleak.usr.UnclosedUrlConnectionDetector"
+              reports="UNCLOSED_URL_CONNECTION"
+              speed="fast"/>
+    <Detector class="analyzer.detectors.orm.NoEntityDefaultConstructorDetector"
+              reports="NO_ENTITY_DEFAULT_CONSTRUCTOR"
+              speed="fast"/>
+    <Detector class="analyzer.detectors.orm.HqlParamsUnsetDetector"
+              reports="PARAM_HQL_UNSET"
+              speed="fast"/>
+    <Detector class="analyzer.detectors.orm.ManyEagerFieldsDetector"
+              reports="TOO_MANY_EAGER_FIELDS"
+              speed="fast"/>
+
+    <!-- BUG PATTERNS -->
     <BugPattern
             abbrev="SYS_OUT_P"
             type="SYSTEM_OUT_PRINTLN_INVOCATION"
             category="CORRECTNESS"/>
+    <BugPattern
+            abbrev="SPRING_MCFG"
+            type="SPRING_MISCONFIGURATION"
+            category="CORRECTNESS"/>
+    <BugPattern
+            abbrev="UNCLOSED_EM"
+            type="UNCLOSED_ENTITY_MANAGER"
+            category="CORRECTNESS"/>
+    <BugPattern
+            abbrev="UNCLOSED_SQL_CONN"
+            type="UNCLOSED_SQL_CONNECTION"
+            category="CORRECTNESS"/>
+    <BugPattern
+            abbrev="UNCLOSED_URL_CONN"
+            type="UNCLOSED_URL_CONNECTION"
+            category="CORRECTNESS"/>
+    <BugPattern
+            abbrev="NO_ENT_DEF_CONSTR"
+            type="NO_ENTITY_DEFAULT_CONSTRUCTOR"
+            category="CORRECTNESS"/>
+    <BugPattern
+            abbrev="HQL_WO_P"
+            type="PARAM_HQL_UNSET"
+            category="CORRECTNESS"/>
+    <BugPattern
+            abbrev="MANY_EAGER_FLD"
+            type="TOO_MANY_EAGER_FIELDS"
+            category="PERFORMANCE"/>
+
 </FindbugsPlugin>

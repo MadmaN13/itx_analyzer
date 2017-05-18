@@ -1,0 +1,8 @@
+<!-- SKB dbo connection bean -->
+    <bean id="skbDboDb" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="${skb.dbo.db.driver}"/>
+        <property name="url" value="${skb.dbo.db.url}"/>
+        <property name="username" value="${skb.dbo.db.username}"/>
+        <property name="password" value="${skb.dbo.db.password}"/>
+    </bean>

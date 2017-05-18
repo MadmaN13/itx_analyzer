@@ -5,12 +5,12 @@ import java.io.*;
 /**
  * Created by nikitarabotaev on 05.05.17.
  */
-public class PrintStreamToFileInterceptor  {
+public class SysOutToFileInterceptor {
 
-    private final String fileName = "/Users/nikitarabotaev/Desktop/analyzerLogs/analyzerLog.log";
+    private final String fileName = "C:\\Users\\NM.Rabotaev\\Desktop\\analyzerLogs\\log.txt";
     private PrintStream stream;
 
-    public PrintStreamToFileInterceptor() {
+    public SysOutToFileInterceptor() {
         super();
         stream = outputFile(fileName);
         if (stream != null) {

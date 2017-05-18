@@ -2,8 +2,8 @@
 <project version="4">
   <component name="FindBugs-IDEA">
     <plugins>
-      <plugin id="plugin2" enabled="true">
-        <url>file:$PROJECT_DIR$/build/libs/anlzr-1.0-SNAPSHOT.jar</url>
+      <plugin id="plugin0" enabled="true">
+        <url>file:/$PROJECT_DIR$/build/libs/anlzr-1.0-SNAPSHOT.jar</url>
       </plugin>
     </plugins>
     <detectors>

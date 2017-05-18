@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="ConfigBugInstance" type="BugInstanceType">
+		<xs:annotation/>
+	</xs:element>
+	<xs:complexType name="BugInstanceType">
+		<xs:sequence>
+			<xs:element name="Detector" type="xs:string"/>
+			<xs:element name="Type" type="xs:string"/>
+			<xs:element name="File" type="xs:string"/>
+			<xs:element name="Line" type="xs:integer"/>
+			<xs:element name="Message" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

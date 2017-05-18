@@ -1,10 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MessageCollection>
     <!-- DETECTORS-->
-    <Detector class="analyzer.detectors.SystemOutPrintLnInvocationDetector">
+    <Detector class="analyzer.detectors.sample.SystemOutPrintLnInvocationDetector">
         <Details>
             <![CDATA[
     <p>This detector warns about SYS_OUTs used in the code. It is a fast detector.</p>
+    ]]>
+        </Details>
+    </Detector>
+
+    <Detector class="analyzer.detectors.spring.config.commons.ScanSpringConfigClassNameDetector">
+        <Details>
+            <![CDATA[
+    <p>This detector warns about mistakes in xml-based configuration of spring framework beans,
+     spring integration services, and spring batch jobs.</p>
+    ]]>
+        </Details>
+    </Detector>
+
+
+    <Detector class="analyzer.detectors.memleak.usr.UnclosedEntityManagerDetector">
+        <Details>
+            <![CDATA[
+    <p>This detector warns about javax.persistence.EntityManager instantiated by
+    EntityManagerFactory as a local method variable, but never closed in it.
+    Points to method, where em in initialized.</p>
+    ]]>
+        </Details>
+    </Detector>
+
+    <Detector class="analyzer.detectors.memleak.usr.UnclosedSqlConnectionDetector">
+        <Details>
+            <![CDATA[
+    <p>This detector warns about java.sql.Connection declared as a local method variable, but never closed in it.
+    Points to method, where connection in initialized.</p>
+    ]]>
+        </Details>
+    </Detector>
+
+    <Detector class="analyzer.detectors.memleak.usr.UnclosedUrlConnectionDetector">
+        <Details>
+            <![CDATA[
+    <p>This detector warns about javax.net.ssl.HttpsURLConnection declared as a local method variable, but never disconnected in it.
+    Points to method, where connection in initialized.</p>
+    ]]>
+        </Details>
+    </Detector>
+    <Detector class="analyzer.detectors.orm.NoEntityDefaultConstructorDetector">
+        <Details>
+            <![CDATA[
+    <p>This detector warns about absence of default constructor in class annotated with @javax.persistence.Entity.
+    All entities by JPA contract must have default constructor, which Hibernate ORM needs to initialize objects(Proxy, for example).</p>
+    ]]>
+        </Details>
+    </Detector>
+    <Detector class="analyzer.detectors.orm.HqlParamsUnsetDetector">
+        <Details>
+            <![CDATA[
+    <p>This detector warns about unset parameters in javax.persistence.TypedQuery, which is invoked with parametrized query
+     string and created by use of javax.persistence.EntityManager interface.</p>
+    ]]>
+        </Details>
+    </Detector>
+    <Detector class="analyzer.detectors.orm.ManyEagerFieldsDetector">
+        <Details>
+            <![CDATA[
+    <p>This detector warns about too many eager fields in javax.persistence.Entity,
+    which may result in pure performance. Loading of many eager fields, especially folded associations of objects(@OneToMany, for example)
+    for a range of entities may cause memory leaks.</p>
     ]]>
         </Details>
     </Detector>
@@ -20,5 +83,83 @@
     ]]>
         </Details>
     </BugPattern>
+
+    <BugPattern type="SPRING_MISCONFIGURATION">
+        <ShortDescription>spring misconfig</ShortDescription>
+        <LongDescription>spring misconfig</LongDescription>
+        <Details>
+            <![CDATA[
+    <p>Spring beans elements configuration errors.</p>
+    ]]>
+        </Details>
+    </BugPattern>
+
+    <BugPattern type="UNCLOSED_ENTITY_MANAGER">
+        <ShortDescription>Found unlosed em.</ShortDescription>
+        <LongDescription>Declared em in method is never closed.</LongDescription>
+        <Details>
+            <![CDATA[
+    <p>Declared in method em needs to be closed!</p>
+    ]]>
+        </Details>
+    </BugPattern>
+    <BugPattern type="UNCLOSED_SQL_CONNECTION">
+        <ShortDescription>Found unclosed sql connection.</ShortDescription>
+        <LongDescription>Declared sql connection in method is never closed.</LongDescription>
+        <Details>
+            <![CDATA[
+    <p>Consider closing sql connection, declared in method. Unclosed connections may result in
+    performance and cause resource leaks.</p>
+    ]]>
+        </Details>
+    </BugPattern>
+    <BugPattern type="UNCLOSED_URL_CONNECTION">
+        <ShortDescription>Found unclosed url connection.</ShortDescription>
+        <LongDescription>Declared url connection in method is never disconnected.</LongDescription>
+        <Details>
+            <![CDATA[
+    <p>Consider invoking disconnect() method on connection, declared in method. Unclosed connections may result in
+    performance and cause resource leaks.</p>
+    ]]>
+        </Details>
+    </BugPattern>
+    <BugPattern type="NO_ENTITY_DEFAULT_CONSTRUCTOR">
+        <ShortDescription>No default constructor.</ShortDescription>
+        <LongDescription>Found @javax.persistence.Entity without default constructor.</LongDescription>
+        <Details>
+            <![CDATA[
+    <p>Add default constructor to Entity!</p>
+    ]]>
+        </Details>
+    </BugPattern>
+    <BugPattern type="PARAM_HQL_UNSET">
+        <ShortDescription>HQL param unset.</ShortDescription>
+        <LongDescription>Hibernate parametrized query wo params set.</LongDescription>s
+        <Details>
+            <![CDATA[
+    <p>Hibernate query is parametrized but parameters are not set! This will cause runtime exception while
+            Hibernate trying to execute the query. Invoke setParameter() method on query.</p>
+    ]]>
+        </Details>
+    </BugPattern>
+    <BugPattern type="TOO_MANY_EAGER_FIELDS">
+        <ShortDescription>Many eager fields.</ShortDescription>
+        <LongDescription>Entity contains too many eager fields.</LongDescription>s
+        <Details>
+            <![CDATA[
+    <p>Entity contains too many fields with FETCH_TYPE=EAGER. Consider reducing the number of
+    these fields, which may improve performance of your application.</p>
+    ]]>
+        </Details>
+    </BugPattern>
+
+    <!-- BUG CODES-->
     <BugCode abbrev="SYS_OUT_P">Found sysout</BugCode>
+    <BugCode abbrev="SPRING_MCFG">Found spring misconfiguration</BugCode>
+    <BugCode abbrev="UNCLOSED_EM">Found unclosed em in method</BugCode>
+    <BugCode abbrev="UNCLOSED_SQL_CONN">Found unclosed sql conn in method</BugCode>
+    <BugCode abbrev="UNCLOSED_URL_CONN">Found unclosed url conn in method</BugCode>
+    <BugCode abbrev="NO_ENT_DEF_CONSTR">Found entity wo def constructor</BugCode>
+    <BugCode abbrev="HQL_WO_P">Hql query param unset</BugCode>
+    <BugCode abbrev="MANY_EAGER_FLD">Hql query param unset</BugCode>
 </MessageCollection>

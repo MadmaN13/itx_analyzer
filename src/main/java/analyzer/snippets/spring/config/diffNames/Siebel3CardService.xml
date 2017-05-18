@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:utils="http://www.intellinx-sw.com/schema/utils"
+       xmlns:flow="http://www.intellinx-sw.com/schema/flow"
+       xmlns:serv="http://www.intellinx-sw.com/schema/services"
+	
+       xmlns:jms="http://www.springframework.org/schema/integration/jms"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+	
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.intellinx-sw.com/schema/services http://www.intellinx-sw.com/schema/services/intellinx-services.xsd
+		http://www.intellinx-sw.com/schema/utils http://www.intellinx-sw.com/schema/utils/intellinx-utils.xsd
+		http://www.intellinx-sw.com/schema/flow http://www.intellinx-sw.com/schema/flow/intellinx-flow.xsd">
+		
+
+    <!--
+        SERVICE DEFINITION: Обмен данными с автоматизированной
+        банковской системой (3card-r), для получения категорий клиентов,
+        через WebSphere MQ.
+    -->
+    <serv:service-descriptor id="Siebel3CardService" group="default" />
+    <int:channel id="inboundChannel1"/>
+    <jms:message-driven-channel-adapter
+        channel="inboundChannel"
+        destination-name="${jms.siebel_3Card.from.name}" />
+    <jee:jndi-lookup id="connectionFactory" jndi-name="${jms.cf.jndi.name}"/>
+    
+    <serv:chain input-channel="inboundChannel">
+        <int:service-activator ref="responseFrom3CardImpl"/>
+    </serv:chain>
+    
+    <bean id="responseFrom3CardImpl" class="su.jet.cib.af.skbbank.siebel3Card.services.impl.ResponseFrom3CardImpl"></bean>
+    
+    <!--<bean id="responseFrom3CardImpl" class="su.jet.cib.af.skbbank.siebel3Card.services.impl.ResponseFrom3CardImpl">      
+        <property name="es" ref="entitySelector" />
+    </bean>
+    <bean id="entitySelector" class="example.utils.commons.EntitySelector">
+    </bean>-->
+
+</beans>

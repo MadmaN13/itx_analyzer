@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:utils="http://www.intellinx-sw.com/schema/utils"
+       xmlns:flow="http://www.intellinx-sw.com/schema/flow"
+       xmlns:serv="http://www.intellinx-sw.com/schema/services"
+
+       xmlns:jms="http://www.springframework.org/schema/integration/jms"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.intellinx-sw.com/schema/services http://www.intellinx-sw.com/schema/services/intellinx-services.xsd
+		http://www.intellinx-sw.com/schema/utils http://www.intellinx-sw.com/schema/utils/intellinx-utils.xsd
+		http://www.intellinx-sw.com/schema/flow http://www.intellinx-sw.com/schema/flow/intellinx-flow.xsd">
+    <!-- SERVICE DEFINITION: absService
+    -->
+    <serv:service-descriptor id="absService" group="default">
+        <serv:description></serv:description>
+    </serv:service-descriptor>
+
+    <int:channel id="inboundChannel"/>
+    <int:channel id="outboundChannel"/>
+
+    <jms:message-driven-channel-adapter
+            channel="inboundChannel"
+            destination-name="${jms.abs.from.check}" />
+
+    <jee:jndi-lookup id="connectionFactory" jndi-name="${jms.cf.jndi.name}"/>
+
+    <serv:chain input-channel="inboundChannel" output-channel="outboundChannel2">
+        <int:service-activator ref="requestParserBean1"/>
+        <int:service-activator ref="requestDispatcherBean"/>
+        <int:service-activator ref="responseMarshallerBean"/>
+        <int:service-activator ref="responseSenderBean" method="sendResponse"/>
+    </serv:chain>
+
+    <int:service-activator
+            ref="paymentWrapperBean"
+            input-channel="outDenyChannel"
+            output-channel="denyRouterInChannel">
+    </int:service-activator>
+
+    <!-- Service beans -->
+
+    <bean id="requestParserBean" class="su.jet.cib.af.skbbank.abs.RequestParser">
+        <property name="dbLogger" ref="dbLoggerBean"></property>
+        <property name="marshaller" ref="jaxbMarshallerBean"></property>
+    </bean>
+
+    <bean id="requestDispatcherBean" class="su.jet.cib.af.skbbank.abs.RequestDispatcher">
+        <property name="entitySelector" ref="entitySelectorBean"></property>
+        <property name="popCreator" ref="popCreatorBean"></property>
+        <property name="rejectionReasonText" value="${rejection.reason.text}"></property>
+    </bean>
+
+    <bean id="responseMarshallerBean" class="su.jet.cib.af.skbbank.abs.MessageMarshaller">
+        <property name="marshaller" ref="jaxbMarshallerBean"></property>
+    </bean>
+    <bean id="responseSenderBean" class="su.jet.cib.af.skbbank.abs.MessageSender">
+        <property name="dbLogger" ref="dbLoggerBean"></property>
+    </bean>
+
+    <!-- Util beans -->
+    <bean id="dbLoggerBean" class="su.jet.cib.af.skbbank.utils.commons.EsbToDbLogger">
+        <property name="flushSize" value="${db.logger.flush.size}"></property>
+    </bean>
+
+    <bean id="popCreatorBean" class=" su.jet.cib.af.skbbank.abs.PaymentOnProcessingAccessor"></bean>
+
+    <bean id="entitySelectorBean" class="su.jet.cib.af.skbbank.utils.commons.EntitySelector"></bean>
+
+    <bean id="jaxbMarshallerBean" class="su.jet.cib.af.skbbank.abs.ManagedJaxbMarshaller">
+        <property name="packageName" value="ru.psit.schemas.abs"></property>
+    </bean>
+</beans>
